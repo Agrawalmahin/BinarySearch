@@ -1,0 +1,50 @@
+/*
+Given an even number ( greater than 2 ), return two prime numbers whose sum will be equal to given number.
+
+NOTE A solution will always exist. read Goldbach’s conjecture
+
+Example:
+
+
+Input : 4
+Output: 2 + 2 = 4
+
+If there are more than one solutions possible, return the lexicographically smaller solution.
+
+If [a, b] is one solution with a <= b,
+and [c,d] is another solution with c <= d, then
+
+[a, b] < [c, d] 
+
+If a < c OR a==c AND b < d. 
+
+*/
+
+public class Solution {
+    
+    public void sieve (int A,boolean isPrime[]){
+        //Arrays.fill(isPrime,true);
+        isPrime[0] = isPrime[1] = false;
+        for(int i = 2;i<=A;i++) isPrime[i] = true;
+        for(int i=2;i<=A;i++){
+            if(isPrime[i] == true){
+                for(int j = i*2;j<=A;j+=i){
+                    isPrime[j] = false;
+                }
+            } 
+        }
+    }
+    public ArrayList<Integer> primesum(int A) {
+        ArrayList<Integer> ans = new ArrayList<>();
+        boolean isPrime [] = new boolean[A+1];
+        sieve(A,isPrime);
+        for(int i = 2;i<=A;i++){
+            if((isPrime[i] == true) && (isPrime[A-i] = true)){
+                ans.add(i);
+                ans.add(A-i);
+                break;
+            }
+        }
+        return ans;
+    }
+}
