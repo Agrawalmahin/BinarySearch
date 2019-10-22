@@ -1,0 +1,36 @@
+public class Solution {
+    public int braces(String A) {
+        Stack<Character> st = new Stack<>();
+        for(int i = 0;i<A.length();i++){
+            if (A.charAt(i) == ')') { 
+                char top = st.peek(); 
+                st.pop(); 
+  
+            // If immediate pop have open parenthesis '(' 
+            // duplicate brackets found 
+            boolean flag = true; 
+  
+            while (top != '(') { 
+  
+                // Check for operators in expression 
+                if (top == '+' || top == '-' ||  
+                    top == '*' || top == '/') 
+                    flag = false; 
+  
+                // Fetch top element of stack 
+                top = st.peek(); 
+                st.pop(); 
+            } 
+  
+            // If operators not found 
+            if (flag == true) 
+                return 1; 
+        } 
+        else
+            st.push(A.charAt(i)); // push open parenthesis '(', 
+                  // operators and operands to stack 
+    } 
+    return 0; 
+        }
+    }
+
