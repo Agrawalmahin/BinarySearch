@@ -1,0 +1,41 @@
+class Solution {
+    long minEle = 0;
+    Stack<Long> st = new Stack<>();
+    public void push(int x) {
+        if(st.isEmpty()){
+            st.push((long)x);
+            minEle = (long)x;
+        }
+        else{
+            if(x >= minEle){
+                st.push((long)x);
+            }
+            else{
+                st.push(2*(long)x - minEle);
+                minEle = x;
+            }
+        }
+    }
+
+    public void pop() {
+        if(st.isEmpty() == false){
+        long y = st.pop();
+        if(y < minEle){
+            minEle = 2*minEle - y;
+        }
+        }
+        
+    }
+
+    public long top() {
+        if(st.isEmpty() == false) return st.peek();
+        else return -1;
+        
+    }
+
+    public long getMin() {
+        if(st.isEmpty() == false) return minEle;
+        else return -1;
+        
+    }
+}
