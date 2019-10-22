@@ -1,0 +1,21 @@
+public class Solution {
+    public ArrayList<Integer> prevSmaller(ArrayList<Integer> A) {
+        ArrayList<Integer> arr = new ArrayList<>();
+        Stack<Integer> ans = new Stack<>();
+        arr.add(-1);
+        ans.push(A.get(0));
+        for(int i = 1;i<A.size();i++){
+            while(!ans.isEmpty() && ans.peek() >= A.get(i)){
+                ans.pop();
+            }
+            if(ans.isEmpty()){
+                arr.add(-1);
+            }
+            else{
+                arr.add(ans.peek());
+            }
+            ans.push(A.get(i));
+        }
+        return arr;
+    }
+}
