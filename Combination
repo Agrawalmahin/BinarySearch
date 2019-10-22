@@ -1,0 +1,25 @@
+public class Solution {
+    
+    public void func(int A, int last,int B,ArrayList<ArrayList<Integer>> ans, ArrayList<Integer> temp ){
+        if(B == 0){
+            ans.add(new ArrayList<Integer>(temp));
+            return;
+        }
+        for(int i = last + 1;i<=A;i++){
+            temp.add(i);
+            func(A,i,B-1,ans,temp);
+            temp.remove(temp.size()-1);
+        }
+    }
+    
+    
+    public ArrayList<ArrayList<Integer>> combine(int A, int B) {
+        ArrayList<ArrayList<Integer>> ans = new ArrayList<ArrayList<Integer>>();
+        
+        if(B < A) return ans;
+        
+        func(A,0,B,ans,new ArrayList<Integer>());
+        return ans;
+        
+    }
+}
