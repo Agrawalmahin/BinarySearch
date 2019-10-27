@@ -1,0 +1,217 @@
+package codeforce;
+import java.util.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.math.*;
+
+ class graphs {
+	public static HashSet<Integer>hSet;
+	public static int ccount;
+	public static int k;
+	public static class InputReader {
+		private final InputStream stream;
+		private final byte[] buf = new byte[8192];
+		private int curChar, snumChars;
+
+		public InputReader(InputStream st) {
+			this.stream = st;
+		}
+
+		public int read() {
+			if (snumChars == -1)
+				throw new InputMismatchException();
+			if (curChar >= snumChars) {
+				curChar = 0;
+				try {
+					snumChars = stream.read(buf);
+				} catch (IOException e) {
+					throw new InputMismatchException();
+				}
+				if (snumChars <= 0)
+					return -1;
+			}
+			return buf[curChar++];
+		}
+
+		public int nextInt() {
+			int c = read();
+			while (isSpaceChar(c)) {
+				c = read();
+			}
+			int sgn = 1;
+			if (c == '-') {
+				sgn = -1;
+				c = read();
+			}
+			int res = 0;
+			do {
+				res *= 10;
+				res += c - '0';
+				c = read();
+			} while (!isSpaceChar(c));
+			return res * sgn;
+		}
+
+		public long nextLong() {
+			int c = read();
+			while (isSpaceChar(c)) {
+				c = read();
+			}
+			int sgn = 1;
+			if (c == '-') {
+				sgn = -1;
+				c = read();
+			}
+			long res = 0;
+			do {
+				res *= 10;
+				res += c - '0';
+				c = read();
+			} while (!isSpaceChar(c));
+			return res * sgn;
+		}
+
+		public int[] nextIntArray(int n) {
+			int a[] = new int[n];
+			for (int i = 0; i < n; i++) {
+				a[i] = nextInt();
+			}
+			return a;
+		}
+
+		public String readString() {
+			int c = read();
+			while (isSpaceChar(c)) {
+				c = read();
+			}
+			StringBuilder res = new StringBuilder();
+			do {
+				res.appendCodePoint(c);
+				c = read();
+			} while (!isSpaceChar(c));
+			return res.toString();
+		}
+
+		public String nextLine() {
+			int c = read();
+			while (isSpaceChar(c))
+				c = read();
+			StringBuilder res = new StringBuilder();
+			do {
+				res.appendCodePoint(c);
+				c = read();
+			} while (!isEndOfLine(c));
+			return res.toString();
+		}
+
+		public boolean isSpaceChar(int c) {
+			return c == ' ' || c == '\n' || c == '\r' || c == '\t' || c == -1;
+		}
+
+		private boolean isEndOfLine(int c) {
+			return c == '\n' || c == '\r' || c == -1;
+		}
+	}
+
+	public static long sum(ArrayList<Long> arrp, long n) {
+		long Sum = 0;
+		for (long i = n - 1; i >= 0; i--) {
+			Sum += (i * arrp.get((int) i)) - ((n - 1 - i) * arrp.get((int) i));
+		}
+		return Sum;
+	}
+
+	private int V;
+	private ArrayList<Integer> adj[];
+
+	graphs(int v) {
+		V = v;
+		adj = new ArrayList[v];
+		for (int i = 0; i < v; i++) {
+			adj[i] = new ArrayList();
+		}
+	}
+
+	void addEdge(int v, int w) {
+		adj[v].add(w);
+	}
+
+	int DFSUtil(int v,boolean visited[],int comp[],int noofcomp,int ccount) 
+    { 
+        visited[v] = true; 
+       // System.out.println("i am value : "+ v);
+        k = Math.max(k, ccount);
+        //System.out.println("i am ccount " + ccount);
+        comp[v] = noofcomp;
+        //System.out.println(v);
+       // System.out.print(v+" "); 
+  
+        // Recur for all the vertices adjacent to this vertex 
+        Iterator<Integer> i = adj[v].listIterator(); 
+       
+        while (i.hasNext()) 
+        { 
+            int n = i.next();
+            if(visited[n])return k ;
+            if (!visited[n]) {
+            	  ccount++;
+            	  k = Math.max(k, ccount);
+                DFSUtil(n, visited,comp,noofcomp,ccount);
+                k = Math.max(k, ccount);
+              } 
+            else {
+            	 return(k);
+            }
+        }
+        k = Math.max(k, ccount);
+     //   System.out.println("I ma v 2 :  " + v);
+       // System.out.println("I am ccount 2 : " + ccount);
+       // System.out.println("I am k :" +k);
+        return(k);
+    } 
+  
+
+	public static void main(String[] args) throws IOException {
+		InputReader in = new InputReader(System.in);
+		int t = in.nextInt();
+		for(int j = 0;j<t;j++) {
+			int n = in.nextInt();
+			int arr[] = new int[n+1];
+			graphs g = new graphs(n+1);
+			for(int i = 1;i<=n;i++) {
+				arr[i] = in.nextInt();
+			}
+			for(int i=1;i<=n;i++) {
+				g.addEdge(i, arr[i]);
+			}
+			int comp[] = new int[n+1];
+			ArrayList<Integer>a = new ArrayList<Integer>();
+			for(int i=0;i<=n;i++) {
+				a.add(0);
+			}
+			boolean visited[] = new boolean[n+1];
+			for(int i=1;i<=n;i++) {
+				visited[i] = false;
+			}
+			int noofcomp = 0;
+			for(int i=1;i<=n;i++) {
+				if(visited[i] == false) {
+					ccount = 1;
+					 k = 0;
+					noofcomp++;
+					int r = g.DFSUtil(i, visited,comp,noofcomp,ccount);
+					int temp = a.remove(noofcomp);
+					a.add(noofcomp, r);
+				}
+			}
+			for(int i=1;i<=n;i++) {
+				int x = comp[i];
+				int ans = a.get(x);
+				System.out.print(ans + " ");
+			}
+			System.out.println();
+		}
+	}
+}
