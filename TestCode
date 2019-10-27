@@ -1,0 +1,217 @@
+package codeforce;
+import java.util.*;
+import java.math.*;
+import java.io.*;
+
+class GFG {
+	public static int val(char c) {
+		if (c >= '0' && c <= '9')
+			return (int) c - '0';
+		else
+			return (int) c - 'A' + 10;
+	}
+
+	// Function to convert a
+	// number from given base
+	// 'b' to decimal
+	public static BigInteger toDeci(String str, int base) {
+		int len = str.length();
+		BigInteger r1 = BigInteger.valueOf(-1);
+		BigInteger power = BigInteger.valueOf(1); // Initialize
+		// power of base
+		BigInteger num = BigInteger.valueOf(0); // Initialize result
+		int i;
+
+		// Decimal equivalent is
+		// str[len-1]*1 + str[len-1] *
+		// base + str[len-1]*(base^2) + ...
+		for (i = len - 1; i >= 0; i--) {
+			// A digit in input number
+			// must be less than
+			// number's base
+			if (val(str.charAt(i)) >= base) {
+				return (r1);
+			}
+
+			num = num.add(BigInteger.valueOf(val(str.charAt(i))).multiply(power));
+			power = power.multiply(BigInteger.valueOf(base));
+		}
+
+		return num;
+	}
+
+	public static class InputReader {
+		private final InputStream stream;
+		private final byte[] buf = new byte[8192];
+		private int curChar, snumChars;
+
+		public InputReader(InputStream st) {
+			this.stream = st;
+		}
+
+		public int read() {
+			if (snumChars == -1)
+				throw new InputMismatchException();
+			if (curChar >= snumChars) {
+				curChar = 0;
+				try {
+					snumChars = stream.read(buf);
+				} catch (IOException e) {
+					throw new InputMismatchException();
+				}
+				if (snumChars <= 0)
+					return -1;
+			}
+			return buf[curChar++];
+		}
+
+		public int nextInt() {
+			int c = read();
+			while (isSpaceChar(c)) {
+				c = read();
+			}
+			int sgn = 1;
+			if (c == '-') {
+				sgn = -1;
+				c = read();
+			}
+			int res = 0;
+			do {
+				res *= 10;
+				res += c - '0';
+				c = read();
+			} while (!isSpaceChar(c));
+			return res * sgn;
+		}
+
+		public long nextLong() {
+			int c = read();
+			while (isSpaceChar(c)) {
+				c = read();
+			}
+			int sgn = 1;
+			if (c == '-') {
+				sgn = -1;
+				c = read();
+			}
+			long res = 0;
+			do {
+				res *= 10;
+				res += c - '0';
+				c = read();
+			} while (!isSpaceChar(c));
+			return res * sgn;
+		}
+
+		public int[] nextIntArray(int n) {
+			int a[] = new int[n];
+			for (int i = 0; i < n; i++) {
+				a[i] = nextInt();
+			}
+			return a;
+		}
+
+		public String readString() {
+			int c = read();
+			while (isSpaceChar(c)) {
+				c = read();
+			}
+			StringBuilder res = new StringBuilder();
+			do {
+				res.appendCodePoint(c);
+				c = read();
+			} while (!isSpaceChar(c));
+			return res.toString();
+		}
+
+		public String nextLine() {
+			int c = read();
+			while (isSpaceChar(c))
+				c = read();
+			StringBuilder res = new StringBuilder();
+			do {
+				res.appendCodePoint(c);
+				c = read();
+			} while (!isEndOfLine(c));
+			return res.toString();
+		}
+
+		public boolean isSpaceChar(int c) {
+			return c == ' ' || c == '\n' || c == '\r' || c == '\t' || c == -1;
+		}
+
+		private boolean isEndOfLine(int c) {
+			return c == '\n' || c == '\r' || c == -1;
+		}
+	}
+
+	public static long sum(ArrayList<Long> arrp, long n) {
+		long Sum = 0;
+		for (long i = n - 1; i >= 0; i--) {
+			Sum += (i * arrp.get((int) i)) - ((n - 1 - i) * arrp.get((int) i));
+		}
+		return Sum;
+	}
+	public static char reVal(int num) 
+	{ 
+	    if (num >= 0 && num <= 9) 
+	        return (char)(num + 48); 
+	    else
+	        return (char)(num - 10 + 65); 
+	} 
+	  
+	// Function to convert a given decimal number 
+	// to a base 'base' and 
+	public static String fromDeci(int base1, int inputNum) 
+	{ 
+	    String s = ""; 
+	  
+	    // Convert input number is given  
+	    // base by repeatedly dividing it 
+	    // by base and taking remainder 
+	    while (inputNum > 0) 
+	    { 
+	        s += reVal(inputNum % base1); 
+	        inputNum /= base1; 
+	    } 
+	    StringBuilder ix = new StringBuilder();  
+	  
+	        // append a string into StringBuilder input1  
+	        ix.append(s);  
+	  
+	    // Reverse the result 
+	    return new String(ix.reverse()); 
+	} 
+
+	public static void main(String[] args) throws IOException {
+		InputReader in = new InputReader(System.in);
+		int q = in.nextInt();
+		for(int x  = 0;x<q;x++) {
+			int n = in.nextInt();
+			int i = n;
+			boolean bool = true;
+			while(bool) {
+				String str1 = fromDeci(3, i);
+			//	System.out.println("I am str1 : " + str1);
+			//	System.out.println(" I am i1 :" + i);
+				int c2 = 0;
+			//	System.out.println(" I am i2 :" + i);
+				for(int jp=0;jp<str1.length();jp++) {
+					if(str1.charAt(jp) == '2') {
+						c2++;
+					}
+				}
+					//System.out.println(" I am i3 :" + i);
+					if(c2>0) {i++;
+					//System.out.println(" I am i4 :" + i);
+					continue;
+					}
+					if(c2 == 0) {
+						System.out.println(i);
+						bool = false;
+						break;
+					}
+			}
+		}
+	}
+}
