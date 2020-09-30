@@ -1,82 +1,53 @@
-/*
-You have to paint N boards of length {A0, A1, A2, A3 … AN-1}. There are K painters available and you are also given how much time a painter takes to paint 1 unit of board. You have to get this job done as soon as possible under the constraints that any painter will only paint contiguous sections of board.
+//Progam to find multioccurence value
+class Solution
+{
+	public static void main(String[] args)
+	{
+		int[] arr = {1,2,2,2,2,2,2,2,2,3,4};
+		int n=2;
+		System.out.println("Index Value(s) where 2 is located:");
+		PrintIndicesForValue(arr,n);
+		
+	}
+	public static void PrintIndicesForValue(int[] numbers, int target) {
+		if (numbers == null)
+			return;
 
-        2 painters cannot share a board to paint. That is to say, a board
-        cannot be painted partially by one painter, and partially by another.
-        A painter will only paint contiguous boards. Which means a
-        configuration where painter 1 paints board 1 and 3 but not 2 is
-        invalid.
+		int low = 0, high = numbers.length - 1;
+		// get the start index of target number
+		int startIndex = -1;
+		while (low <= high) {
+			int mid = (high - low) / 2 + low;
+			if (numbers[mid] > target) {
+				high = mid - 1;
+			} else if (numbers[mid] == target) {
+				startIndex = mid;
+				high = mid - 1;
+			} else
+				low = mid + 1;
+		}
 
-Return the ans % 10000003
+		// get the end index of target number
+		int endIndex = -1;
+		low = 0;
+		high = numbers.length - 1;
+		while (low <= high) {
+			int mid = (high - low) / 2 + low;
+			if (numbers[mid] > target) {
+				high = mid - 1;
+			} else if (numbers[mid] == target) {
+				endIndex = mid;
+				low = mid + 1;
+			} else
+				low = mid + 1;
+		}
 
-Input :
-K : Number of painters
-T : Time taken by painter to paint 1 unit of board
-L : A List which will represent length of each board
-
-Output:
-     return minimum time to paint all boards % 10000003
-
-Example
-
-Input : 
-  K : 2
-  T : 5
-  L : [1, 10]
-
-
-*/
-    public class Solution {
-        
-        
-        public boolean func(ArrayList<Integer> C, int A, int mid){
-            
-            int pReq = 1;
-            int curr = 0;
-            
-            for(int i = 0;i<C.size();i++){
-                if(C.get(i) > mid) return false;
-                
-                if(curr + C.get(i) > mid){
-                    pReq++;
-                    curr = C.get(i);
-                    
-                    if(pReq > A) return false;
-                }
-                
-                else curr += C.get(i);
-            }
-            return true;
-        }
-        
-        public int paint(int A, int B, ArrayList<Integer> C) {
-            
-            int maxC = Integer.MIN_VALUE;
-            int sum = 0;
-            
-            for(int i = 0;i<C.size();i++){
-                maxC = Math.max(maxC,C.get(i));
-                sum += C.get(i);
-            }
-            int m = 10000003;
-            if(C.size() <= A){
-                return (int)(((long)maxC*B)%(m));
-            }
-            
-            int start = 0;
-            int end = sum;
-            int result = Integer.MAX_VALUE;
-            while(start <= end){
-                int mid = start + (end - start)/2;
-                
-                if(func(C,A,mid) == true){
-                    result = Math.min(result, mid);
-                    end = mid - 1;
-                }
-                else start = mid + 1;
-            }
-            int ans = (int)(((long)result*B)%m);
-            return ans;
-        }
-    }
-
+		if (startIndex != -1 && endIndex != -1){
+			for(int i=0; i+startIndex<=endIndex;i++){
+				if(i>0)
+					System.out.print(',');
+				System.out.print(i+startIndex);
+			}
+		}
+	}
+}
