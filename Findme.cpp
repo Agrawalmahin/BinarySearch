@@ -1,64 +1,50 @@
 #include<bits/stdc++.h>
 using namespace std;
 #define ll long long
-#define ld long double
-#define mod 1000000007
-#define mp make_pair
-#define pb push_back
-#define si(x) scanf("%d",&x)
-#define pi(x) printf("%d\n",x)
-#define s(x) scanf("%lld",&x)
-#define p(x) printf("%lld\n",x)
-#define sc(x) scanf("%s",x)
-#define pc(x) printf("%s",x)
-#define pii pair<int,int>
-#define pll pair<ll,ll>
-#define F first
-#define S second
-#define inf 4e18
-#define prec(x) fixed<<setprecision(15)<<x
-#define all(x) x.begin(),x.end()
-#define rall(x) x.rbegin(),x.rend()
-#define mem(x,y) memset(x,y,sizeof(x))
-#define PQG priority_queue< int,std::vector<int>,std::greater<int> >
-#define PQL priority_queue< int,std::vector<int>,std::less<int> >
-#define PQPL priority_queue<pii ,vector< pii >, less< pii > >
-#define PQPG priority_queue<pii ,vector< pii >, greater< pii > >
-#define fast_io ios_base::sync_with_stdio(false);cin.tie(NULL)
-#define max(a,b) (a>b?a:b)
-
-ll search(ll *A,ll mn,ll mx,ll key){
-    ll mid;
-    while(mn<=mx){
-        mid = (mn+mx)/2;
-        if(A[mid] == key){
-            return mid;
-        }
-        else if(A[mid] > key){
-            if(A[mid-1]<=key){
-                return (mid-1);
-            }
-            mx = mid-1;
-        }
-        else{
-            if(A[mid+1] > key){
-                return mid;
-            }
-            mn = mid+1;
-        }
+#define _ cin.tie(0);cout.tie(0);ios_base::sync_with_stdio(0);
+int b[1000005] = {0};
+int A[1000005];
+int n;
+int get(int idx){
+    int sum=0;
+    while(idx>0){
+        sum += b[idx];
+        idx -= idx&(-idx);
     }
-    return -1;
+    return sum;
 }
-
-ll  power(ll a,ll e){
-    if(e == 0)
-        return 1;
-     ll ans = power(a,e/2);
-     ll p = (ans*ans)%mod;
-    if(e%2==1)p = (a*p)%mod;
-     return p;    
+void add(int idx){
+    while(idx<=n){
+        b[idx]++;
+        idx += idx&(-idx);
+    }
 }
 int main(){
+    _
+    int q;
+    cin >> n >> q ;
+    for(int i = 1 ; i <= n ; i++){
+        cin >> A[i];
+    }A[0] = 0;
+    sort(A,A+n+1);
     
+    while(q--){
+        int k;
+        cin >> k ;
+        int l = 1,r=n;
+        int ans = n ;
+        while(l<=r){
+            int mid = (l+r)/2;
+            if(mid - get(mid) >= k){
+                ans = min(ans,mid);
+                r = mid-1;
+            }
+            else{
+                l = mid+1;
+            }
+        }
+        cout << A[ans]<<"\n";
+        add(ans);
+    }
     return 0;
 }
