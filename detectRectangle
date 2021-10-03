@@ -1,0 +1,14 @@
+/**
+Given 4 numbers, determine if they can for a rectangle
+
+**/
+
+
+public boolean isRectangle(int a, int b, int c, int d){ 
+
+  if(a == b && c == d) return true;
+  if(a == c && b == d) return true;
+  if(a == d && b == c) return true;
+  
+  return false;
+}
