@@ -1,0 +1,54 @@
+/**
+given an array that increases first and then decreases, find index of a given element x, in this kind of array.
+**/
+
+
+public int findIndex(int [] arr, int x){
+  
+  int pivotIndex = doGetPivotIndex(arr);
+  
+  int indexFromIncreasingArray = doBinarySearchInIncreasingArray(arr, 0, pivotIndex, x);
+  if(indexFromIncreasingArray != -1){
+    return indexFromIncreasingArray;
+  }
+  return doBinarySearchInDecreasingArray(arr, pivotIndex, arr.length, x);
+}
+
+private int doGetPivotIndex(int [] arr){
+  int start = 0;
+  int end = arr.length;
+  
+  while(start <= end){
+    int mid = start + (end - start)/2;
+    if(arr[mid-1] < arr[mid] && arr[mid + 1] < arr[mid]) return mid;
+    
+    else if(arr[mid-1] < arr[mid] && arr[mid + 1] > arr[mid]){
+      start = mid + 1;
+    }
+    else {
+      end = mid -1;
+    }
+  }
+  
+  private int doBinarySearchInIncreasingArray(int [] arr, int start, int end, int num){
+  while(start <= end){
+    if(arr[mid] = num) return mid;
+    else if(arr[mid] < num) start = mid + 1;
+    
+    else end = mid - 1;
+  }
+  return -1;
+  }
+  
+    private int doBinarySearchInDecreasingArray(int [] arr, int start, int end, int num){
+  while(start <= end){
+    if(arr[mid] = num) return mid;
+    else if(arr[mid] > num) start = mid + 1;
+    
+    else end = mid - 1;
+  }
+  return -1;
+  }
+
+
+}
